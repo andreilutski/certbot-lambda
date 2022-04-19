@@ -16,7 +16,7 @@ CERTBOT_SERVER = 'https://acme-staging-v02.api.letsencrypt.org/directory'
 
 #Get clients
 s3 = boto3.client('s3')
-acm = boto3.client('acm')
+acm = boto3.client('acm', region_name='us-east-1')  # fixed for cf acm certs
 
 def update_symlinks(domain):
     ''' The dark side of the symlinks, required by Certbot and not restored by
