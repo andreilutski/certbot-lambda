@@ -28,8 +28,11 @@ def update_symlinks(domain):
             os.remove('/tmp/certbot/config/live/{}/{}.pem'.format(domain,k))
         except:
             pass
-        os.symlink('/tmp/certbot/config/archive/{}/{}1.pem'.format(domain,k), 
-                   '/tmp/certbot/config/live/{}/{}.pem'.format(domain,k))
+        try:
+            os.symlink('/tmp/certbot/config/archive/{}/{}1.pem'.format(domain,k), 
+                       '/tmp/certbot/config/live/{}/{}.pem'.format(domain,k))
+        except:
+            pass
 
 
 def renew_certs(domains):
@@ -229,8 +232,12 @@ def lambda_handler(event, context):
                     update_symlinks(domain)
                     # request renew cert
                     logger.info('Renew cert for domain {}'.format(domain))
-                    renew_certs(domain)
-                    certs_renew += 1
+                    try:
+                        renew_certs(domain)
+                        certs_renew += 1
+                    except:
+                        request_certs(os.environ['DOMAINS_EMAIL'], domain)
+                        certs_new += 1
                     # import it to ACM replacing old cert
                     logger.info('Replace cert for domain {} in ACM'.format(domain))
                     response = acm.import_certificate(
@@ -260,5 +267,3 @@ def lambda_handler(event, context):
         } 
     
     return result
-    
-    
