@@ -12,7 +12,7 @@ logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
 #This is staging server
-CERTBOT_SERVER = 'https://acme-staging-v02.api.letsencrypt.org/directory'
+STAGING_SERVER = 'https://acme-staging-v02.api.letsencrypt.org/directory'
 
 #Get clients
 s3 = boto3.client('s3')
@@ -95,7 +95,7 @@ def request_certs(emails, domains):
 
     # Stage or Prod?
     if os.environ['CERTBOT_ENV'] == 'staging':
-        certbot_args.extend(['--server', CERTBOT_SERVER])
+        certbot_args.extend(['--server', STAGING_SERVER])
 
     certbot.main.main(certbot_args)
 
@@ -186,7 +186,7 @@ def lambda_handler(event, context):
             
         # Stage or Prod?
         if os.environ['CERTBOT_ENV'] == 'staging':
-            logger.info("Using Certbot staging server {}".format(CERTBOT_SERVER))
+            logger.info("Using Certbot staging server {}".format(STAGING_SERVER))
             
         logger.info("Domain list is {}".format(os.environ['DOMAINS_LIST']))
 
