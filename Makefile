@@ -5,7 +5,7 @@ clean:
 
 ## prepares build.zip archive for AWS Lambda deploy 
 lambda-build: clean 
-	cp lib/certbot-1.3.0.zip ./build.zip
+	cp lib/certbot-2.6.0.zip ./build.zip
 	zip build.zip *.py 
 
 ## create CloudFormation stack with lambda function and role.
