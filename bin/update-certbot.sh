@@ -13,3 +13,6 @@ echo "Updated certbot package at ${CERTBOT_PATH}"
 
 sed -i '' -e "s/lib\/certbot-[0-9]\.[0-9]\.[0-9]\.zip/lib\/${ZIP_FILE}/g" Makefile
 echo "Updated Makefile to use ${CERTBOT_PATH}"
+
+zip -g ${CERTBOT_PATH} main.py
+echo "Added main.py to ${CERTBOT_PATH}"
